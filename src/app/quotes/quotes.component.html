@@ -1,23 +1,38 @@
-<div class="flex flex-col h-[calc(100vh-78px)] justify-between">
-    <div class="w-full flex-1 overflow-y-auto gap-y-3">
+<div class="flex flex-col h-[calc(100vh-78px)] justify-between ">
+    <div class="w-full flex-1 overflow-y-auto gap-y-3 p-4">
         @for (q of quotes(); track q.id) {
-        <div class="p-4 border-b border-gray-600">
-            <div class="relative rounded-md">
-                <img src="{{q.mediaUrl}}" alt="" class="w-full h-48 object-cover">
+        <div class="p-4 border-b border-gray-600 rounded-lg">
+            <div class="relative rounded-md overflow-hidden">
+                <img src="{{q.mediaUrl}}" alt="" class="w-full h-72 object-cover">
                 <div
-                    class="text-[#191919] text-lg font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    {{q.text}}</div>
+                    class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+                    <div class="text-white text-lg font-bold">{{q.text}}</div>
+                </div>
 
             </div>
             <div class="text-gray-400 text-sm">Quote by {{q.username}} on {{q.createdAt | date: 'dd-MM-yyyy'}}</div>
         </div>
         } @empty {
         <div class="p-4 border-b border-gray-600">
-            <div class="text-white text-lg font-bold">No Quotes</div>
-            <div class="text-gray-400 text-sm">No Quotes</div>
+            <div class="flex items-center gap-x-5">
+
+                <button mat-icon-button>
+                    <mat-icon (click)="refreshQuotes()">refresh</mat-icon>
+                </button>
+                <div class="text-gray-400 text-lg font-bold">No Quotes</div>
+            </div>
         </div>
         }
+
+        <div class="fixed bottom-16 right-10">
+            <button title="Upload Quote" aria-label="Upload Quote" mat-fab color="primary" (click)="router.navigate(['/quote-upload'])">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        
+
     </div>
-    <mat-paginator [length]="1000" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+    <mat-paginator [disabled]="quotes().length === 0" [length]="10000000" [pageIndex]="0" (page)="onPageChange($event)"
+        [pageSize]="limit" [pageSizeOptions]="[5, 10, 25, 100,1000]" aria-label="Select page">
     </mat-paginator>
 </div>
