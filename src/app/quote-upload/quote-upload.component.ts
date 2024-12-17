@@ -9,8 +9,10 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { POST_QUOTE_PATH, UPLOAD_PATH } from '../../constants/env';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogBoxComponent } from '../../components/dialog-box/dialog-box.component';
 @Component({
   selector: 'app-quote-upload',
   standalone: true,
@@ -23,6 +25,7 @@ export class QuoteUploadComponent {
   router = inject(Router);
   authService = inject(AuthService);
   isPosting = signal<boolean>(false)
+  dialog = inject(MatDialog);
 
 
   quoteForm = new FormGroup({
@@ -57,11 +60,13 @@ export class QuoteUploadComponent {
 
     this.onUpladingFile().subscribe((res) => {
       payload.mediaUrl = res[0]?.url
-      this.httpClient.post(POST_QUOTE_PATH, payload , {headers: {'Authorization': `${this.authService.getToken()}`}}).subscribe((res) => {
-         this.isPosting.set(false);
-         this.router.navigate(['/quotes'])
+      this.httpClient.post(POST_QUOTE_PATH, payload, { headers: { 'Authorization': `${this.authService.getToken()}` } }).pipe(catchError(async (err) => this.dialog.open(DialogBoxComponent, { data: null, disableClose: false, width: '400px', height: 'auto', panelClass: ['dialog'], }))).subscribe((res) => {
+        this.isPosting.set(false);
+        this.router.navigate(['/quotes'])
       })
     })
+
+
 
 
   }
@@ -73,6 +78,16 @@ export class QuoteUploadComponent {
       map((res) => {
         console.log('File uploaded successfully', res);
         return res;
+      }),
+      catchError((err) => {
+        this.dialog.open(DialogBoxComponent, {
+          data: null,
+          disableClose: false,
+          width: '400px',
+          height: 'auto',
+          panelClass: ['dialog'],
+        });
+        return err;
       })
     );
   }

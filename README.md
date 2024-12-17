@@ -34,4 +34,9 @@ To start the application, run the following command:
 ng serve
 ``` 
 
+## Build the Application
+```bash
+ng build
+```
+
 

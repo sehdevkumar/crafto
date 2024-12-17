@@ -8,6 +8,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { catchError } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogBoxComponent } from '../../components/dialog-box/dialog-box.component';
 
 @Component({
   selector: 'app-quotes',
@@ -21,6 +24,7 @@ export class QuotesComponent implements OnInit {
   as = inject(AuthService);
   router = inject(Router);
   http = inject(HttpClient);
+  dialog = inject(MatDialog);
 
   quotes = signal<QuoteApiResponse[]>([]);
   limit: number = 10; // Number of quotes per page
@@ -36,7 +40,16 @@ export class QuotesComponent implements OnInit {
       headers: {
         'Authorization': `${this.as.getToken()}`
       }
-    }).subscribe((res: any) => {
+    }).pipe(catchError((err) => {
+      this.dialog.open(DialogBoxComponent, {
+        data: null,
+        disableClose: false,
+        width: '400px',
+        height: 'auto',
+        panelClass: ['dialog'],
+      });
+      return err;
+    })).subscribe((res: any) => {
       this.quotes.set(res?.data as QuoteApiResponse[]);
     });
   }
