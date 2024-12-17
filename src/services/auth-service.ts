@@ -10,6 +10,10 @@ export class AuthService {
         this.onParseToken(localStorage.getItem(this.__tokenKey) as string)
     }
 
+    getToken():string | null {
+        return localStorage.getItem(this.__tokenKey)
+    }
+
     onAfterLogin(token: string) {
         const getToken = localStorage.getItem(this.__tokenKey)
         if (getToken === null || getToken === undefined) {
