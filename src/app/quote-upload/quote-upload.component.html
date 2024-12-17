@@ -1,1 +1,32 @@
-<p>quote-upload works!</p>
+<div class="grid h-[calc(100vh-78px)] w-full items-center justify-center">
+    <mat-card class="p-4 w-96 flex flex-col gap-y-3">
+        <mat-card-header>
+            <mat-card-title class="text-center text-white">Upload Quote</mat-card-title>
+        </mat-card-header>
+        <mat-card-content >
+            <form [formGroup]="quoteForm" class="flex flex-col gap-y-3">
+                <mat-form-field class="w-full h-[70px]">
+                    <mat-label>Quote</mat-label>
+                    <textarea matInput formControlName="quote" required></textarea>
+                    <mat-error
+                        *ngIf="quoteForm.get('quote')?.errors">{{getErrorMessage(quoteForm.get('quote')?.errors)}}</mat-error>
+                </mat-form-field>
+                <label class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                    <span class="sr-only">Choose file</span>
+                    <input type="file" (change)="onFileChange($event)" accept=".jpg, .jpeg, .png" required class="block w-full text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
+                </label>
+
+                <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" *ngIf="isPosting()">
+                    <div class="flex items-center justify-center">
+                        <div class="spinner-border animate-spin inline-block w-8 h-8 border-b-2 border-blue-500 rounded-full"></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end" >
+                    <button mat-raised-button [disabled]="quoteForm.invalid || isPosting()" (click)="onSubmit()" color="primary">Upload</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+</div>
