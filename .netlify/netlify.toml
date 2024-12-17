@@ -1,0 +1,35 @@
+functionsDirectory = "C:\\Users\\visua\\Downloads\\crafto\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[[plugins]]
+origin = "default"
+package = "@netlify/angular-runtime"
+
+[plugins.inputs]
+
+[build]
+publish = "C:\\Users\\visua\\Downloads\\crafto\\dist\\crafto\\browser"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "pnpm run build"
+functions = "C:\\Users\\visua\\Downloads\\crafto\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
