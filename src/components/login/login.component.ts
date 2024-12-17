@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
 
     this.http.post(LOGIN_PATH, paylad).subscribe((res) => {
        this.as.onAfterLogin((res as any)['token'] as string)
+      this.router.navigate(['/quotes'])
     });
 
   }

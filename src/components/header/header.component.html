@@ -1,0 +1,31 @@
+<nav class="bg-gray-800 p-2 sm:p-3 md:p-4 xl:p-5">
+  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+    <div class="text-white text-3xl">
+      Quote App
+    </div>
+    <div
+      class="space-y-1 md:space-y-0 md:space-x-2 sm:space-x-3 xxl:space-x-4 xl:space-x-5 md:flex md:flex-row flex-col">
+      <a routerLink="/quotes" routerLinkActive="bg-gray-700"
+        class="text-white px-2 py-1 cursor-pointer rounded-md hover:bg-gray-700 transition duration-300 block md:inline-block">
+        Quotes
+      </a>
+      <a routerLink="/quote-upload" routerLinkActive="bg-gray-700"
+        class="text-white px-2 py-1 cursor-pointer rounded-md hover:bg-gray-700 transition duration-300 block md:inline-block">
+        Upload Quote
+      </a>
+
+      @if (!isLoggedIn()) {
+      <a routerLink="/login" routerLinkActive="bg-gray-700"
+        class="text-white px-2 py-1 cursor-pointer rounded-md hover:bg-gray-700 transition duration-300 block md:inline-block">
+        Login
+      </a>
+      }
+      @else{
+      <a (click)="onLogout()"
+        class="text-white px-2 py-1 cursor-pointer rounded-md hover:bg-gray-700 transition duration-300 block md:inline-block">
+        Logout
+      </a>
+      }
+    </div>
+  </div>
+</nav>

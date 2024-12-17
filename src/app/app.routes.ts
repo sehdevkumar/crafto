@@ -19,7 +19,7 @@ export const routes: Routes = [
      
     {
         path: '',
-        redirectTo: 'quotes',
+        redirectTo: 'login',
         pathMatch: 'full'
     },
     {

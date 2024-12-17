@@ -21,7 +21,7 @@ export class AuthService {
         this.onParseToken(token)
     }
     
-    isToekenExpiredOrRemoved() {
+    isToekenExpiredOrRemoved():boolean {
         const token = localStorage.getItem(this.__tokenKey)
         if (token === null || token === undefined) {
             return true
@@ -40,6 +40,13 @@ export class AuthService {
         this.__decodedToken.set(decodedToken)
         console.log(decodedToken)
         this.isLoggedIn.set(true)
+    }
+
+    onLogout() {
+        localStorage.removeItem(this.__tokenKey)
+        this.isLoggedIn.set(false)
+        this.__decodedToken.set(null)
+        window.location.href = '/login'
     }
 
 
