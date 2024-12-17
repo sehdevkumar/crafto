@@ -1,24 +1,34 @@
-<div class="h-screen flex flex-col justify-center items-center">
-  <mat-card class="p-4 w-96 flex flex-col gap-y-3">
-    <mat-card-header>
-      <mat-card-title class="text-center text-white">Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="w-full">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username" required maxlength="4">
-          <mat-error *ngIf="loginForm.get('username')?.errors">{{getErrorMessage(loginForm.get('username')?.errors)}}</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-full">
-          <mat-label>OTP</mat-label>
-          <input appNumbersOnly matInput type="text"  formControlName="otp" required maxlength="4">
-          <mat-error *ngIf="loginForm.get('otp')?.errors">{{getErrorMessage(loginForm.get('otp')?.errors)}}</mat-error>
-        </mat-form-field>
-        <div class="flex justify-end">
-          <button mat-raised-button color="primary" type="submit">Login</button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
-</div>
+@defer (on viewport){
+    <div class="h-screen flex flex-col justify-center items-center">
+      <mat-card class="p-4 w-96 flex flex-col gap-y-3">
+        <mat-card-header>
+          <mat-card-title class="text-center text-white">Login</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-form-field class="w-full">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username" required>
+              <mat-error *ngIf="loginForm.get('username')?.errors">{{getErrorMessage(loginForm.get('username')?.errors)}}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="w-full">
+              <mat-label>OTP</mat-label>
+              <input appNumbersOnly matInput type="text"  formControlName="otp" required maxlength="4">
+              <mat-error *ngIf="loginForm.get('otp')?.errors">{{getErrorMessage(loginForm.get('otp')?.errors)}}</mat-error>
+            </mat-form-field>
+            <div class="flex justify-end">
+              <button mat-raised-button color="primary" type="submit">Login</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+}@placeholder (minimum 500){
+    <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div class="flex items-center justify-center">
+        <div class="spinner-border animate-spin inline-block w-8 h-8 border-b-2 border-blue-500 rounded-full"></div>
+      </div>
+    </div>
+    
+}

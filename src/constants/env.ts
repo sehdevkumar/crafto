@@ -1,0 +1,1 @@
+export const LOGIN_PATH = 'https://assignment.stage.crafto.app/login'

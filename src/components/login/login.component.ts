@@ -7,28 +7,54 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NumbersOnlyDirective } from '../../directives/NumbersOnlyDirective';
+import { HttpClient } from '@angular/common/http';
+import { LOGIN_PATH } from '../../constants/env';
+import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, FormsModule, ReactiveFormsModule,NumbersOnlyDirective],
+  imports: [CommonModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, FormsModule, ReactiveFormsModule, NumbersOnlyDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup<any>;
   fb = inject(FormBuilder);
-
+  http = inject(HttpClient);
+  as = inject(AuthService);
+  router = inject(Router)
   ngOnInit(): void {
 
+    if(!this.as.isToekenExpiredOrRemoved()) {
+      this.router.navigate(['/'])
+      return
+    }
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
-      otp: ['', [Validators.required, Validators.maxLength(4), Validators.max(4)]],
+      otp: ['', [Validators.required]],
     })
   }
 
 
   onSubmit() {
+
+    if (this.loginForm.invalid) {
+      console.log(this.loginForm.value);
+      return;
+
+    }
+
+    const paylad = {
+      username: this.loginForm.value.username,
+      otp: this.loginForm.value.otp
+    }
+
+    this.http.post(LOGIN_PATH, paylad).subscribe((res) => {
+       this.as.onAfterLogin((res as any)['token'] as string)
+    });
+
   }
   getErrorMessage(controlErrors: any) {
     if (controlErrors?.required) {
