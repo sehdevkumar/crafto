@@ -11,6 +11,9 @@ import { HttpClient } from '@angular/common/http';
 import { LOGIN_PATH } from '../../constants/env';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +27,7 @@ export class LoginComponent implements OnInit {
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   as = inject(AuthService);
+  dialog = inject(MatDialog)
   router = inject(Router)
   ngOnInit(): void {
 
@@ -51,9 +55,21 @@ export class LoginComponent implements OnInit {
       otp: this.loginForm.value.otp
     }
 
-    this.http.post(LOGIN_PATH, paylad).subscribe((res) => {
-       this.as.onAfterLogin((res as any)['token'] as string)
-      this.router.navigate(['/quotes'])
+    this.http.post(LOGIN_PATH, paylad).pipe(
+      catchError((err) => {
+        this.dialog.open(DialogBoxComponent, {
+          data: null,
+          disableClose: false,
+          width: '400px',
+          height: 'auto',
+          panelClass: ['dialog'],
+        });
+        return err;
+      })
+    ).subscribe((res: any) => {
+      
+      this.as.onAfterLogin(res.token);
+      this.router.navigate(['/quotes']);
     });
 
   }
